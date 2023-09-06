@@ -6,7 +6,7 @@ const StockTable = dynamic(() => import('./components/StockTable'), {
 
 export default function Home() {
   return (
-    <main className='container m-auto p-12 flex flex-col'>
+    <main className='container m-auto p-6 flex flex-col'>
       <h1 className='text-center font-bold text-2xl mb-6'>
         Monopoly Stock Exchange 2.0
       </h1>
