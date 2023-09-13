@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { checkCrash, updateSharePrice } from '../utils/updateSharePrice'
 import Settings from './SettingsPanel'
 
@@ -55,8 +55,30 @@ export default function StockTable() {
   const [message, setMessage] = useState('')
   const [settings, setSettings] = useState(initialSettings)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isSaved, setIsSaved] = useState(false)
+
+  useEffect(() => {
+    // Check if there is a previously saved game
+    const shares = localStorage.getItem('shares')
+    const roundCount = localStorage.getItem('roundCount')
+    const crashProbability = localStorage.getItem('crashProbability')
+    const message = localStorage.getItem('message')
+    const settings = localStorage.getItem('settings')
+
+    if (!shares || !roundCount || !crashProbability || !settings) return
+
+    setShares(JSON.parse(shares))
+    setRoundCount(JSON.parse(roundCount))
+    setCrashProbability(JSON.parse(crashProbability))
+    setSettings(JSON.parse(settings))
+    if (message) {
+      setMessage(message)
+    }
+    console.log('Game loaded')
+  }, [])
 
   const handleRefresh = () => {
+    setIsSaved(false)
     const { isCrash, crashProbability: prob } = checkCrash(
       crashProbability,
       settings
@@ -109,6 +131,29 @@ export default function StockTable() {
 
   const toggleSettings = () => {
     setIsSettingsOpen((prev) => !prev)
+  }
+
+  const handleSave = () => {
+    setIsSaved(true)
+    localStorage.setItem('shares', JSON.stringify(shares))
+    localStorage.setItem('roundCount', JSON.stringify(roundCount))
+    localStorage.setItem('crashProbability', JSON.stringify(crashProbability))
+    localStorage.setItem('message', message)
+    localStorage.setItem('settings', JSON.stringify(settings))
+    console.log('Game saved')
+  }
+
+  const startNewGame = () => {
+    console.log('new game')
+    confirm(
+      'Are you sure you want to start a new game? This will delete your current save.'
+    )
+    localStorage.removeItem('shares')
+    localStorage.removeItem('roundCount')
+    localStorage.removeItem('crashProbability')
+    localStorage.removeItem('message')
+    localStorage.removeItem('settings')
+    location.reload()
   }
 
   const headerEls = (
@@ -201,6 +246,18 @@ export default function StockTable() {
           onClick={toggleSettings}
         >
           {isSettingsOpen ? 'Close Settings' : 'Open Settings'}
+        </button>
+        <button
+          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-3'
+          onClick={handleSave}
+        >
+          {isSaved ? 'Saved!' : 'Save game'}
+        </button>
+        <button
+          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-3'
+          onClick={startNewGame}
+        >
+          New game
         </button>
       </div>
       {isSettingsOpen ? (
