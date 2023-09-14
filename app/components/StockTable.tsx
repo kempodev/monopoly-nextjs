@@ -203,8 +203,8 @@ export default function StockTable() {
 
   return (
     <>
-      <div className='flex justify-between my-6'>
-        <div className='w-1/4 text-sm'>
+      <div className='flex justify-between my-6 text-xs md:text-sm'>
+        <div className='w-1/4'>
           <div>Round:</div>
           <div>{roundCount}</div>
         </div>
@@ -215,46 +215,47 @@ export default function StockTable() {
         >
           {message}
         </div>
-        <div className='w-1/4 text-right text-sm'>
-          Crash prob: {`${Math.round(crashProbability * 100)}%`}
+        <div className='w-1/4 text-right'>
+          <div>Crash prob:</div>
+          <div>{`${Math.round(crashProbability * 100)}%`}</div>
         </div>
       </div>
-      <table className='table-auto border-collapse'>
+      <table className='table-auto border-collapse text-xs md:text-sm'>
         <thead className='border-inherit'>{headerEls}</thead>
         <tbody>
           {priceEls}
           {changeEls}
         </tbody>
       </table>
-      <div className='flex flex-col md:flex-row justify-center gap-6 my-6'>
+      <div className='grid grid-cols-2 md:flex justify-center gap-4 mt-8 text-sm'>
         <button
-          className='rounded-full bg-cyan-500 hover:bg-cyan-400 text-white p-3'
+          className='col-span-2 rounded-full bg-cyan-500 hover:bg-cyan-400 text-white p-3 md:p-4'
           onClick={handleRefresh}
         >
           Refresh Prices
         </button>
         {shares.length < maxShares ? (
           <button
-            className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-3'
+            className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-2 md:p-4'
             onClick={handleShareAdd}
           >
             Add Share
           </button>
         ) : null}
         <button
-          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-3'
+          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-2 md:p-4'
           onClick={toggleSettings}
         >
           {isSettingsOpen ? 'Close Settings' : 'Open Settings'}
         </button>
         <button
-          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-3'
+          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-2 md:p-4'
           onClick={handleSave}
         >
           {isSaved ? 'Saved!' : 'Save game'}
         </button>
         <button
-          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-3'
+          className='rounded-full bg-white text-cyan-500 border-2 border-cyan-500 hover:bg-cyan-100 p-2 md:p-4'
           onClick={startNewGame}
         >
           New game
